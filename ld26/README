@@ -5,6 +5,10 @@
 This is a game with colors. And you bounce.
 It is compiled with glfw3 from git https://github.com/glfw/glfw
  and an opengl 3.3 or higher graphics card.
+Settings are printed to the command line every time you quit, and it takes
+ settings on the command line when you run it, so you can do something like :
+cat settings.txt | bounce > settings.txt;
+ to load and save settings;
 
 I tried to make the menu controls intuitive, so try to play without
  reading the rest of this, but I may not have succeeded.
@@ -30,6 +34,7 @@ I tried to make the menu controls intuitive, so try to play without
 
 This is difficulty selecting. Red is hardest, green is easiest.
 
+
 - Pause menu -
 
  _______    ______________
@@ -48,6 +53,7 @@ scoreboard has your score in blue, and the highscore for the selected
 R = reset level
 Continue = go back to game (Esc will also work)
 Q = quit to main menu
+
 
 - Hud -
 

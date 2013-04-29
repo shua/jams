@@ -16,6 +16,7 @@ int pause = 2;
 int captureMouse;
 int spacebar = 0;
 int p_key = 0;
+int pp_key = 0;
 int mouse_left = 0;
 int dead;
 int difficulty = 0;
@@ -144,7 +145,7 @@ void drawLevel() {
 			platforms[i][4]);
 		if(platforms[i][3] > 0) {
 			setFillColor(0.9, 0.9, 0.9);
-			platforms[i][3] -= 1;
+			platforms[i][3] -= (!pause);
 		}
 	}
 	for(int i = 0; i < 20; ++i) {
@@ -203,13 +204,17 @@ void drawPauseMenu() {
 	drawCube((contained && mouse_left), -20 - (contained && mouse_left), 0, 30, 10, 1);
 	pause = !(contained && clicked);
 	contained = mouseContained(22, -20, 10, 10);
-	pause = (contained && clicked) ? 2 : pause;
+	if(contained && clicked) {
+		highscore[difficulty] = (maxheight > highscore[difficulty]) ? maxheight : highscore[difficulty];
+		pause = 2;
+	}
 	setFillColor(.5 + .5 * contained, 0, 0);
 	drawCube(22 + (contained && mouse_left), -20 - (contained && mouse_left), 0, 10, 10, 1);
 	contained = mouseContained(-22, -20, 10, 10);
 	setFillColor(0, 0, .5 + .5 * contained);
 	drawCube(-22 + (contained && mouse_left), -20 - (contained && mouse_left), 0, 10, 10, 1);
 	if(contained && clicked) {
+		highscore[difficulty] = (maxheight > highscore[difficulty]) ? maxheight : highscore[difficulty];
 		setupLevel(seed);
 		pause = 0;
 	}
@@ -267,6 +272,7 @@ void drawDifficultySelect() {
 			pause = 0;
 		}
 	}
+	diff_display = difficulty;
 	hudDrawOff();
 }
 
@@ -306,7 +312,6 @@ void setupLevel(int s) {
 	spacebar = 0;
 	p_key = 0;
 	dead = 0;
-	highscore[difficulty] = (maxheight > highscore[difficulty]) ? maxheight : highscore[difficulty];
 	levelOffset = 0;
 	maxheight = 0;
 
@@ -324,10 +329,12 @@ int main(int argc, char**argv) {
 	if(setupGL() == 1)
 		return 1;
 
-	char* potato = (argc > 1) ? argv[1] : "potato";
+	char* potato = (argc == 2 || argc == 6) ? argv[1] : "potato";
 	for(int i = 0; potato[i] != '\0'; ++i) {
 		seed += (int)potato[i];
 	}
+	for(int i = 2; (argc == 6) && i < 6; ++i)
+		highscore[i-2] = atof(argv[i]);
 	while(!quit) {
 		glfwPollEvents();
 		if(glfwGetKey(window, GLFW_KEY_ESC) == GLFW_PRESS && !p_key) {
@@ -340,6 +347,22 @@ int main(int argc, char**argv) {
 		if(glfwGetKey(window, GLFW_KEY_ESC) == GLFW_RELEASE)
 			p_key = 0;
 
+#ifdef DEBUG
+		if(glfwGetKey(window, GLFW_KEY_Q) && !pp_key) {
+			pause = (pause != 3) ? 3 : 0;
+			pp_key = 1;
+		}
+		if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_RELEASE) {
+			pp_key = 0;
+		}
+
+		if(pause == 3) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			drawLevel();
+			drawHud();
+			glfwSwapBuffers();
+		} else {
+#endif 
 		if(pause == 2) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			drawDifficultySelect();
@@ -364,6 +387,7 @@ int main(int argc, char**argv) {
 
 			updatePlayer();
 			
+			
 			int xpos = 0, ypos = 0;
 			glfwGetCursorPos(window, &xpos, &ypos);
 			glfwSetCursorPos(window, 400, 300);
@@ -375,6 +399,10 @@ int main(int argc, char**argv) {
 			drawHud();
 			glfwSwapBuffers();
 		}
+#ifdef DEBUG
+		}
+#endif
 	}
+	printf("%s %f %f %f %f \n", potato, highscore[0], highscore[1], highscore[2], highscore[3]);
 	shutdownGL();
 }
