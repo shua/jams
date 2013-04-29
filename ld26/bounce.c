@@ -167,7 +167,7 @@ void drawLevel() {
 }
 
 int mouseContained(float x, float y, float sx, float sy) {
-	int xpos, ypos;
+	double xpos, ypos;
 	glfwGetCursorPos(window, &xpos, &ypos);
 	int x1 = ((x - .5 * sx) * 10) + 400;
 	int x2 = ((x + .5 * sx) * 10) + 400;
@@ -360,17 +360,17 @@ int main(int argc, char**argv) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			drawLevel();
 			drawHud();
-			glfwSwapBuffers();
+			glfwSwapBuffers(window);
 		} else {
 #endif 
 		if(pause == 2) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			drawDifficultySelect();
-			glfwSwapBuffers();
+			glfwSwapBuffers(window);
 		}else if(pause) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			drawPauseMenu();
-			glfwSwapBuffers();
+			glfwSwapBuffers(window);
 		} else {
 			float movx = (glfwGetKey(window, GLFW_KEY_D) - glfwGetKey(window, GLFW_KEY_A)) * .3;
 			float movz = (glfwGetKey(window, GLFW_KEY_W) - glfwGetKey(window, GLFW_KEY_S)) * .3;
@@ -388,7 +388,7 @@ int main(int argc, char**argv) {
 			updatePlayer();
 			
 			
-			int xpos = 0, ypos = 0;
+			double xpos = 0, ypos = 0;
 			glfwGetCursorPos(window, &xpos, &ypos);
 			glfwSetCursorPos(window, 400, 300);
 			rotateCamera((xpos - 400) * 0.01, (300 - ypos) * 0.01);
@@ -397,7 +397,7 @@ int main(int argc, char**argv) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			drawLevel();
 			drawHud();
-			glfwSwapBuffers();
+			glfwSwapBuffers(window);
 		}
 #ifdef DEBUG
 		}

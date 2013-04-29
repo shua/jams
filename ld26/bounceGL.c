@@ -1,25 +1,26 @@
 #include "bounce.h"
 
-GLFWwindow window;
+GLFWwindow* window;
 Matrix projection_matrix, hud_projection_matrix, view_matrix, model_matrix;
 GLuint shader = 0;
 GLuint colorUniLoc, hudUniLoc, alphaUniLoc, mdlMatUniLoc, viwMatUniLoc, prjMatUniLoc;
 int quit = 0;
 
+#ifdef DEBUG
 void glCheckError(const char* file, int line) {
 	GLenum error = glGetError();
 	if(error != GL_NO_ERROR) {
 		printf("Error: Opengl failed in %s : %d; %s \n", file, line, gluErrorString(error));
 	}
 }
+#endif
 
-void cb_resize(void* win, int w, int h) {
+void cb_resize(GLFWwindow* win, int w, int h) {
 	glViewport(0,0,w,h);
 }
 
-int cb_close(void* win) {
+void cb_close(GLFWwindow* win) {
 	quit = 1;
-	return 0;
 }
 
 int createShader();
@@ -30,13 +31,13 @@ int setupGL() {
 		return 1;
 	}
 
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-	glfwOpenWindowHint(GLFW_WINDOW_RESIZABLE, GL_FALSE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwOpenWindow(800, 600, GLFW_WINDOWED, "bounce", NULL);
+	window = glfwCreateWindow(800, 600, "bounce", NULL, NULL);
 	if(!window) {
 		glfwTerminate();
 		printf("window creation failed \n");
@@ -51,8 +52,8 @@ int setupGL() {
 	}
 
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetWindowSizeCallback(cb_resize);
-	glfwSetWindowCloseCallback(cb_close);
+	glfwSetWindowSizeCallback(window, cb_resize);
+	glfwSetWindowCloseCallback(window, cb_close);
 	glfwSwapInterval(1);
 
 	glEnable(GL_DEPTH_TEST);

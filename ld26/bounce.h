@@ -6,10 +6,14 @@
 
 #include "linearAlg.h"
 
+#ifdef DEBUG
 #define glCheck(call) (call); glCheckError(__FILE__, __LINE__)
 void glCheckError(const char* file, int line);
+#else
+#define glCheck(call) (call)
+#endif
 
-extern GLFWwindow window;
+extern GLFWwindow* window;
 extern int quit;
 extern Matrix projection_matrix, view_matrix, model_matrix;
 extern Vector4 cameraPos, cameraFoc, cameraSid;
