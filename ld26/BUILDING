@@ -1,0 +1,10 @@
+
+-- Color Bounce --
+       by Shuall
+
+sources: linearAlg.c bounce.c bounceGL.c
+libraries: -lm -lGL -lGLU -lGLEW -lglfw
+output: -o bounce
+
+oneline:
+ linearAlg.c bounce.c bounceGL.c -lm -lGL -lGLU -lGLEW -lglfw -o bounce

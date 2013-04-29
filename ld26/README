@@ -1,0 +1,55 @@
+
+-- Color Bounce --
+       by Shuall
+
+This is a game with colors. And you bounce.
+It is compiled with glfw3 from git https://github.com/glfw/glfw
+ and an opengl 3.3 or higher graphics card.
+
+I tried to make the menu controls intuitive, so try to play without
+ reading the rest of this, but I may not have succeeded.
+      ____
+     |    |                     /|\
+     | w  |                      |
+ ____|____|____     ___          '
+|    |    |    |    ___    /     .     \
+| a  | s  | d  |          <---   |   --->
+|____|____|____|           \    \|/    /
+ ____
+|    |   ___   menu if in game
+| esc|   ___   quit on main menu
+|____|
+
+ ________________
+|                |   ___
+|     space      |   ___   jump
+|________________|
+
+
+- Main menu -
+
+This is difficulty selecting. Red is hardest, green is easiest.
+
+- Pause menu -
+
+ _______    ______________
+|       |  |              |
+|success|  | scoreboard   |
+| box   |  |              |
+|_______|  |______________|
+
+  ___  ___________  ___
+ | R ||  Continue || Q |
+ |___||___________||___|
+
+success box = yellow   if you got a new highscore   otherwise blue
+scoreboard has your score in blue, and the highscore for the selected
+ difficulty in the corresponding color.
+R = reset level
+Continue = go back to game (Esc will also work)
+Q = quit to main menu
+
+- Hud -
+
+left side is jump counter
+right side is height (which is your score)
